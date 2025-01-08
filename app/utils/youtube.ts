@@ -58,29 +58,29 @@ async function categorizeVideos(
   videos: any[]
 ): Promise<{ [key: string]: any[] }> {
   const categories: { [key: string]: any[] } = {};
+
+  const titles = videos.map((video) => video.snippet.title);
+
   const systemPrompt = encodeURIComponent(
-    "Analyze this video title and return ONLY a single category name, nothing else. Be consistent with category names."
+    "For each video title in the following list, return ONLY its category name. Respond with a JSON array of categories in the same order as the input titles. Be consistent with category names."
   );
+  const titlesPrompt = encodeURIComponent(JSON.stringify(titles));
 
-  for (const video of videos) {
-    try {
-      const prompt = encodeURIComponent(video.snippet.title);
-      const response = await fetch(
-        `https://text.pollinations.ai/${prompt}?model=mistral&system=${systemPrompt}&json=true`
-      );
-      const category = (await response.text()).trim();
+  try {
+    const response = await fetch(
+      `https://text.pollinations.ai/${titlesPrompt}?model=mistral&system=${systemPrompt}&json=true`
+    );
 
+    const categories_array = await response.json();
+    videos.forEach((video, index) => {
+      const category = categories_array[index] || "Uncategorized";
       if (!categories[category]) {
         categories[category] = [];
       }
       categories[category].push(video);
-    } catch {
-      if (!categories["Uncategorized"]) {
-        categories["Uncategorized"] = [];
-      }
-      categories["Uncategorized"].push(video);
-    }
+    });
+  } catch (error) {
+    categories["Uncategorized"] = videos;
   }
-
   return categories;
 }
