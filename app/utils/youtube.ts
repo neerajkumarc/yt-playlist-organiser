@@ -16,13 +16,11 @@ export async function getVideos(
     auth: oauth2Client,
   });
 
-  console.log("playlistId", playlistId);
   if (!playlistId) {
     throw new Error("Playlist not found");
   }
 
   const videos = await getPlaylistItems(youtube, playlistId);
-  console.log("videos", categorizeVideos(videos));
   return categorizeVideos(videos);
 }
 
@@ -43,7 +41,6 @@ export async function getPlaylists(accessToken: string) {
     part: ["snippet"],
     mine: true,
   });
-  console.log("response", response.data.items);
   return response.data.items || [];
 }
 
