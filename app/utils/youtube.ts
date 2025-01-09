@@ -59,16 +59,20 @@ async function categorizeVideos(
 ): Promise<{ [key: string]: any[] }> {
   const categories: { [key: string]: any[] } = {};
 
-  const titles = videos.map((video) => video.snippet.title);
-
+  const videoData = videos.map((video) => [
+    {
+      titles: video.snippet.title,
+      descriptions: video.snippet.description.substring(0, 200),
+    },
+  ]);
   const systemPrompt = encodeURIComponent(
-    "For each video title in the following list, return ONLY its category name. Respond with a JSON array of categories in the same order as the input titles. Be consistent with category names."
+    'For each video data in the following list, return ONLY its category name. Respond with a JSON array of categories in the same order as the input titles. Be consistent with category names and use only common categories. If a video title is not in any category, then return "Uncategorized".'
   );
-  const titlesPrompt = encodeURIComponent(JSON.stringify(titles));
+  const dataPrompt = encodeURIComponent(JSON.stringify(videoData));
 
   try {
     const response = await fetch(
-      `https://text.pollinations.ai/${titlesPrompt}?model=mistral&system=${systemPrompt}&json=true`
+      `https://text.pollinations.ai/${dataPrompt}?model=mistral&system=${systemPrompt}&json=true`
     );
 
     const categories_array = await response.json();
