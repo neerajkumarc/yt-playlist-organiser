@@ -36,8 +36,8 @@ export async function getPlaylists(accessToken: string) {
     version: "v3",
     auth: oauth2Client,
   });
-
   const response = await youtube.playlists.list({
+    access_token: accessToken,
     part: ["snippet"],
     mine: true,
   });
