@@ -12,6 +12,7 @@ interface Video {
     resourceId: {
       videoId: string;
     };
+    videoOwnerChannelTitle: string;
   };
 }
 
@@ -35,7 +36,11 @@ export default function VideoList({ videos }: VideoListProps) {
                 className="border border-gray-700 rounded-lg p-4 bg-gray-100"
               >
                 <img
-                  src={video.snippet.thumbnails.medium.url}
+                  src={
+                    Object.keys(video.snippet.thumbnails).length == 0
+                      ? "https://via.placeholder.com/150"
+                      : video.snippet.thumbnails.medium.url
+                  }
                   alt={video.snippet.title}
                   className="w-full h-48 object-cover mb-4 rounded"
                 />
@@ -43,7 +48,7 @@ export default function VideoList({ videos }: VideoListProps) {
                   {video.snippet.title}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {video.snippet.channelTitle}
+                  {video.snippet.videoOwnerChannelTitle}
                 </p>
                 <a
                   href={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
