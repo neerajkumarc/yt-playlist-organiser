@@ -1,4 +1,8 @@
 "use client";
+
+import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
+
 interface Video {
   id: string;
   snippet: {
@@ -26,39 +30,41 @@ export default function VideoList({ videos }: VideoListProps) {
       {Object.entries(videos).map(([category, categoryVideos]) => (
         <div key={category} className="mb-8">
           <hr className="border-gray-700" />
-          <h2 className="text-2xl font-semibold text-gray-900 mt-4">
-            {category}
-          </h2>
+          <h2 className="text-2xl font-semibold mt-4">{category}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {categoryVideos.map((video: Video) => (
-              <div
-                key={video.id}
-                className="border border-gray-700 rounded-lg p-4 bg-gray-100"
-              >
-                <img
-                  src={
-                    Object.keys(video.snippet.thumbnails).length == 0
-                      ? "https://via.placeholder.com/150"
-                      : video.snippet.thumbnails.medium.url
-                  }
-                  alt={video.snippet.title}
-                  className="w-full h-48 object-cover mb-4 rounded"
-                />
-                <h3 className="font-semibold text-gray-900">
-                  {video.snippet.title}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {video.snippet.videoOwnerChannelTitle}
-                </p>
-                <a
-                  href={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block bg-gray-900 text-white px-4 py-2 rounded text-sm"
-                >
-                  Watch on YouTube
-                </a>
-              </div>
+              <Card key={video.id} className="flex flex-col h-[400px]">
+                <CardContent className="p-4 flex flex-col h-full">
+                  <div className="w-full h-48 overflow-hidden">
+                    <img
+                      src={
+                        Object.keys(video.snippet.thumbnails).length == 0
+                          ? "https://via.placeholder.com/150"
+                          : video.snippet.thumbnails.medium.url
+                      }
+                      alt={video.snippet.title}
+                      className="w-full h-full object-cover rounded"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-grow">
+                    <CardTitle className="text-lg mt-4 line-clamp-2">
+                      {video.snippet.title}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-1">
+                      {video.snippet.videoOwnerChannelTitle}
+                    </CardDescription>
+                  </div>
+                  <Button className="mt-auto w-full" variant="default" asChild>
+                    <a
+                      href={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Watch on YouTube
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
