@@ -11,11 +11,31 @@ export default async function Home() {
 
   if (!session || !session.accessToken) {
     return (
-      <div className="min-h-screen  flex items-center justify-center">
-        <div className="backdrop-blur-lg bg-white/10 p-8 rounded-2xl shadow-2xl">
-          <h1 className="text-4xl font-bold mb-8">
-            Welcome to Youtube Playlist Organizer
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
+        <div className="backdrop-blur-lg bg-white/10 p-12 rounded-3xl shadow-2xl max-w-2xl w-full mx-4 flex flex-col items-center justify-center">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white ">
+            Youtube Playlist Organizer
           </h1>
+          <p className="text-gray-300 mb-8 md:text-lg">
+            Organize your YouTube playlists efficiently. Sort videos, and keep
+            your content organized.
+          </p>
+          <div className="space-y-6 mb-8">
+            <div className="flex items-center gap-4">
+              <div className="p-2 rounded-full bg-purple-500/10">✨</div>
+              <p className="text-gray-300">
+                Simple and intuitive playlist management
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="p-2 rounded-full bg-purple-500/10">🔒</div>
+              <p className="text-gray-300">Secure Google account integration</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="p-2 rounded-full bg-purple-500/10">🎯</div>
+              <p className="text-gray-300">Manage multiple playlists</p>
+            </div>
+          </div>
           <LoginButton />
         </div>
       </div>
