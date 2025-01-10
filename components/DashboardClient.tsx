@@ -4,26 +4,10 @@ import { useState } from "react";
 import PlaylistDropdown from "./PlaylistDropdown";
 import VideoList from "./VideoList";
 
-interface Video {
-  id: string;
-  snippet: {
-    title: string;
-    channelTitle: string;
-    thumbnails: {
-      medium: {
-        url: string;
-      };
-    };
-    resourceId: {
-      videoId: string;
-    };
-  };
-}
-
 interface DashboardClientProps {
   initialPlaylists: any;
-  initialVideos: Record<string, Video[]>;
-  getPlaylistVideos: (playlistId: string) => Promise<Record<string, Video[]>>;
+  initialVideos: Record<string, any[]>;
+  getPlaylistVideos: (playlistId: string) => Promise<Record<string, any[]>>;
 }
 
 export default function DashboardClient({

@@ -84,6 +84,7 @@ async function categorizeVideos(
       categories[category].push(video);
     });
   } catch (error) {
+    console.log(error);
     categories["Uncategorized"] = videos;
   }
   return categories;
