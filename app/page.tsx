@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import LoginButton from "@/components/LoginButton";
 import { getPlaylists, getVideos } from "./utils/youtube";
 import DashboardClient from "@/components/DashboardClient";
