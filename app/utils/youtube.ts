@@ -21,7 +21,7 @@ export async function getVideos(
   }
 
   const videos = await getPlaylistItems(youtube, playlistId);
-  return categorizeVideos(videos);
+  return videos;
 }
 
 export async function getPlaylists(accessToken: string) {
@@ -52,40 +52,4 @@ async function getPlaylistItems(youtube: any, playlistId: string) {
   });
 
   return response.data.items;
-}
-
-async function categorizeVideos(
-  videos: any[]
-): Promise<{ [key: string]: any[] }> {
-  const categories: { [key: string]: any[] } = {};
-
-  const videoData = videos.map((video) => [
-    {
-      titles: video.snippet.title,
-      descriptions: video.snippet.description.substring(0, 200),
-    },
-  ]);
-  const systemPrompt = encodeURIComponent(
-    'For each video data in the following list, return ONLY its category name. Respond with a JSON array of categories in the same order as the input titles. Be consistent with category names and use only common categories. If a video title is not in any category, then return "Uncategorized".'
-  );
-  const dataPrompt = encodeURIComponent(JSON.stringify(videoData));
-
-  try {
-    const response = await fetch(
-      `https://text.pollinations.ai/${dataPrompt}?model=mistral&system=${systemPrompt}&json=true`
-    );
-
-    const categories_array = await response.json();
-    videos.forEach((video, index) => {
-      const category = categories_array[index] || "Uncategorized";
-      if (!categories[category]) {
-        categories[category] = [];
-      }
-      categories[category].push(video);
-    });
-  } catch (error) {
-    console.log(error);
-    categories["Uncategorized"] = videos;
-  }
-  return categories;
 }
