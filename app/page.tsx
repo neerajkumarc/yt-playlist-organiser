@@ -9,7 +9,11 @@ import { UserCircle } from "lucide-react";
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.accessToken) {
+  if (
+    !session ||
+    !session.accessToken ||
+    session.error === "RefreshAccessTokenError"
+  ) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="backdrop-blur-lg p-12 rounded-3xl  max-w-2xl w-full mx-4">
