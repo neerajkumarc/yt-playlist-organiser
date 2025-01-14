@@ -5,7 +5,7 @@ import { ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "YouTube Watch Later Organizer",
+  title: "YouTube Watch Later Organiser",
   description: "Organize your YouTube Watch Later playlist",
 };
 

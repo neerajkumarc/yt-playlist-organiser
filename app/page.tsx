@@ -18,7 +18,7 @@ export default async function Home() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="backdrop-blur-lg p-12 rounded-3xl  max-w-2xl w-full mx-4">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 ">
-            Youtube Playlist Organizer
+            Youtube Playlist Organiser
           </h1>
           <p className="text-muted-foreground mb-8 md:text-lg">
             Organize your YouTube playlists efficiently. Sort videos, and keep
@@ -76,7 +76,7 @@ export default async function Home() {
         <div className="backdrop-blur-lg rounded-3xl shadow-xl border border-white/10 p-6 md:p-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <h1 className="text-2xl md:text-4xl font-bold ">
-              Youtube Playlist Organizer
+              Youtube Playlist Organiser
             </h1>
             <div className="flex flex-col md:flex-row items-start sm:items-center gap-4">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
