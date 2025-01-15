@@ -80,7 +80,7 @@ export default function DashboardClient({
             onPlaylistChange={handlePlaylistChange}
           />
           {!showCategorised && (
-            <Button onClick={handleCategoriseVideos}>
+            <Button onClick={handleCategoriseVideos} disabled={isLoading}>
               Categorise
               {isLoading && (
                 <span className="animate-spin">
