@@ -1,6 +1,6 @@
-# YouTube Playlist Organiser
+# AI YouTube Playlist Organiser
 
-A Next.js application that helps you organize and manage your YouTube playlists efficiently.
+A Next.js application that helps you organize and manage your YouTube playlists efficiently with AI.
 
 ## Features
 
