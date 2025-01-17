@@ -32,34 +32,53 @@ export default function DashboardClient({
     videos: any
   ): Promise<{ [key: string]: any[] }> {
     const categories: { [key: string]: any[] } = {};
-    const videoData = videos.map((video: any) => [
-      {
+    const BATCH_SIZE = 10;
+    
+    // Process videos in batches
+    for (let i = 0; i < videos.length; i += BATCH_SIZE) {
+      const videoBatch = videos.slice(i, i + BATCH_SIZE);
+      const videoData = videoBatch.map((video: any) => ({
         titles: video.snippet.title,
         descriptions: video.snippet.description.substring(0, 200),
-      },
-    ]);
-    const systemPrompt = encodeURIComponent(
-      'For each video data in the following list, return ONLY its category name. Respond with a JSON array of categories in the same order as the input titles. Be consistent with category names and use only common categories. If a video title is not in any category, then return "Uncategorized".'
-    );
-    const dataPrompt = encodeURIComponent(JSON.stringify(videoData));
-
-    try {
-      const response = await fetch(
-        `https://text.pollinations.ai/${dataPrompt}?model=mistral&system=${systemPrompt}&json=true`
+      }));
+  
+      const systemPrompt = encodeURIComponent(
+        'For each video title in the following list, return only its category name. Provide the results as a JSON array with categories corresponding to the titles in the same order as the input. Ensure the category names are consistent. If a video does not fall into any of these categories, return "Uncategorized" for that title.'
       );
-
-      const categories_array = await response.json();
-      videos.forEach((video: any, index: number) => {
-        const category = categories_array[index] || "Uncategorized";
-        if (!categories[category]) {
-          categories[category] = [];
+      const dataPrompt = encodeURIComponent(JSON.stringify(videoData));
+  
+      try {
+        const response = await fetch(
+          `https://text.pollinations.ai/${dataPrompt}?model=deepseek&system=${systemPrompt}&json=true`
+        );
+  
+        const categories_array = await response.json();
+        
+        // Process each video in the current batch
+        videoBatch.forEach((video: any, index: number) => {
+          const category = categories_array.categories[index] || "Uncategorized";
+          if (!categories[category]) {
+            categories[category] = [];
+          }
+          categories[category].push(video);
+        });
+        
+        // Optional: Add a small delay between batches to avoid rate limiting
+        if (i + BATCH_SIZE < videos.length) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        categories[category].push(video);
-      });
-    } catch (error) {
-      console.log(error);
-      categories["Uncategorized"] = videos;
+      } catch (error) {
+        console.log('Error processing batch:', error);
+        // Add failed batch videos to Uncategorized
+        videoBatch.forEach((video: any) => {
+          if (!categories["Uncategorized"]) {
+            categories["Uncategorized"] = [];
+          }
+          categories["Uncategorized"].push(video);
+        });
+      }
     }
+    
     return categories;
   }
 
