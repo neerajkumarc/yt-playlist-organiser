@@ -49,7 +49,7 @@ export default function DashboardClient({
   
       try {
         const response = await fetch(
-          `https://text.pollinations.ai/${dataPrompt}?model=deepseek&system=${systemPrompt}&json=true`
+          `https://text.pollinations.ai/${dataPrompt}?&system=${systemPrompt}&json=true`
         );
   
         const categories_array = await response.json();
